@@ -7,26 +7,22 @@
 class xgemac_normal_vseq extends xgemac_base_vseq;
   `uvm_object_utils(xgemac_normal_vseq)
   
-  //Variable : in_seq_nornal_h
+  //Variable : in_seq_normal_h
   //Declaring handle to the virtual sequence
- 
   in_seq_normal in_seq_normal_h;
 
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
-  
-  extern function xgemac_normal_vseq::new(string name = "xgemac_normal_vseq");
+  extern function new(string name = "xgemac_normal_vseq");
   extern task body();
 
-
-endclass  
+endclass : xgemac_normal_vseq
 
 //--------------------------------------------------------------------------------------------
 // Construct: new
 //  name : xgemac_normal_vseq
 //--------------------------------------------------------------------------------------------
-
 function xgemac_normal_vseq::new(string name = "xgemac_normal_vseq");
   super.new(name);
 endfunction : new
@@ -36,16 +32,15 @@ endfunction : new
 // Used to creates the handle and starts the sequences
 //  name : xgemac_normal_vseq
 //--------------------------------------------------------------------------------------------
-   task body();
-    `uvm_info(get_type_name(), "virtual_seq: Inside Body", UVM_LOW);
-     in_seq_normal_h = in_seq_normal::type_id::create("in_seq_normal_h");
-     
-     fork
-      in_seq_normal_h.start(in_seqr_h);
-      wish_seq_h.start(wish_seqr_h);
-      reset_seq_h.start(reset_seqr_h);
-    join
-      
-   endtask
-    
+task xgemac_normal_vseq::body();
+  `uvm_info(get_type_name(), "virtual_seq: Inside Body", UVM_LOW);
+  in_seq_normal_h = in_seq_normal::type_id::create("in_seq_normal_h");
+   
+  fork
+    in_seq_normal_h.start(in_seqr_h);
+    wish_seq_h.start(wish_seqr_h);
+    reset_seq_h.start(reset_seqr_h);
+  join
+endtask : body
+
 `endif

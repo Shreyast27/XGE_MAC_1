@@ -1,5 +1,5 @@
-`ifndef OUT_MONITOR_INCLUDED_
-`define OUT_MONITOR_INCLUDED_
+`ifndef OUT_MON_INCLUDED_
+`define OUT_MON_INCLUDED_
 
 //--------------------------------------------------------------------------------------------
 // Class: out_mon
@@ -38,7 +38,7 @@ endclass : out_mon
 //  name   - out_mon
 //  parent - parent under which this component is created
 //--------------------------------------------------------------------------------------------
-function out_mon::new(string name = "out_mon", uvm_component parent);
+virtual function new(string name = "out_mon", uvm_component parent);
   super.new(name, parent);
   out_mon_port = new("out_mon_port", this);
 endfunction : new
@@ -50,24 +50,12 @@ endfunction : new
 // Parameters:
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
-function void out_mon::build_phase(uvm_phase phase);
+virtual function void out_mon::build_phase(uvm_phase phase);
   super.build_phase(phase);
   if (!uvm_config_db#(virtual pkt_intf)::get(this, "", "pkt_vif", pkt_vif)) begin
     `uvm_fatal("NO PKT_VIF", {"virtual interface must be set for: ", get_full_name(), ".PKT_VIF"});
   end
 endfunction : build_phase
-
-//--------------------------------------------------------------------------------------------
-// Function: end_of_elaboration_phase
-//
-// Parameters:
-//  phase - uvm phase
-//--------------------------------------------------------------------------------------------
-function void out_mon::end_of_elaboration_phase(uvm_phase phase);
-  super.end_of_elaboration_phase(phase);
-  // Add any end-of-elaboration configuration here if needed
-endfunction : end_of_elaboration_phase
-
 //--------------------------------------------------------------------------------------------
 // Task: run_phase
 // Parameters:
@@ -90,10 +78,17 @@ task out_mon::run_phase(uvm_phase phase);
     in_seq_item_h.pkt_rx_err = pkt_vif.pkt_out_mon_mp.pkt_out_mon_cb.pkt_rx_err;
 
 
-    `uvm_info(get_type_name, $sformatf("[OUT MONITOR] pkt_rx_avail = %0d, pkt_rx_data = %0h,  pkt_rx_eop = %0d, pkt_rx_val = %0d,
-                                        pkt_rx_sop = %0d, pkt_rx_mod = %0d,pkt_rx_err = %0d", in_seq_item_h.pkt_rx_avail,in_seq_item_h.pkt_rx_data,
-                                       in_seq_item_h.pkt_rx_eop,in_seq_item_h.pkt_rx_val,in_seq_item_h.pkt_rx_sop,
-                                      in_seq_item_h.pkt_rx_mod,in_seq_item_h.pkt_rx_err), UVM_LOW);
+   `uvm_info(get_type_name(), 
+          $sformatf("[OUT MONITOR] pkt_rx_avail = %0d, pkt_rx_data = %0h, pkt_rx_eop = %0d, pkt_rx_val = %0d, \
+pkt_rx_sop = %0d, pkt_rx_mod = %0d, pkt_rx_err = %0d", 
+                    in_seq_item_h.pkt_rx_avail,
+                    in_seq_item_h.pkt_rx_data,
+                    in_seq_item_h.pkt_rx_eop,
+                    in_seq_item_h.pkt_rx_val,
+                    in_seq_item_h.pkt_rx_sop,
+                    in_seq_item_h.pkt_rx_mod,
+                    in_seq_item_h.pkt_rx_err),
+          UVM_LOW)
     
     // calling the write function
     out_mon_port.write(in_seq_item_h);

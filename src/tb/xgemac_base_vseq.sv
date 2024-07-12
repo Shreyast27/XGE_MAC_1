@@ -5,7 +5,7 @@
 // Class: xgemac_base_vseq
 // Holds the handle of actual in_sqr, wish_sqr and reset_sqr, and holds the objects of wish_seq, reset_seq.
 //--------------------------------------------------------------------------------------------
-class xgemac_base_vseq extends uvm_sequence;
+class xgemac_base_vseq extends uvm_sequence#(in_seq_item);
 
   `uvm_object_utils(xgemac_base_vseq)
   
@@ -27,7 +27,7 @@ class xgemac_base_vseq extends uvm_sequence;
 
   //Variable : reset_seq_h
   //Declaring handle to the reset sequence
-  reset_seq wish_seq_h;
+  reset_seq reset_seq_h;
   
   //-------------------------------------------------------
   // Externally defined Tasks and Functions

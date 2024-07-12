@@ -10,6 +10,7 @@
 // Used to compare the data sent by in_driver and data recieved by out_monitor
 // Used to verify registers
 //--------------------------------------------------------------------------------------------
+`include "xgemac_define.svh"
 class xgemac_scoreboard extends uvm_scoreboard;
   `uvm_component_utils(xgemac_scoreboard)
 
@@ -93,8 +94,8 @@ endfunction
 task xgemac_scoreboard::run_phase(uvm_phase phase);
   int frame_count;
   int packet_count;
-  repeat(`no_of_frames) begin
-    frame_count++
+  repeat(no_of_frames) begin
+    frame_count++;
     wait(e.triggered);
     in_size = size_in.pop_front();
     out_size = size_out.pop_front();

@@ -14,6 +14,8 @@ class in_mon extends uvm_monitor;
   // Declaring analysis port for the monitor port
  uvm_analysis_port#(in_seq_item) in_mon_port;
  
+ in_seq_item item ;
+
   //-------------------------------------------------------
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
@@ -33,9 +35,9 @@ endclass : in_mon
 //--------------------------------------------------------------------------------------------
 function in_mon::new(string name = "in_mon", uvm_component parent);
   super.new(name, parent);
- in_mon = new("in_mon", this);
+  in_mon_port = new("in_mon_port", this);
 endfunction : new
- 
+
 //--------------------------------------------------------------------------------------------
 // Function: build_phase
 //  Creates the required ports, gets the required configuration from config_db
@@ -58,12 +60,9 @@ endfunction : build_phase
 task in_mon::run_phase(uvm_phase phase);
   super.run_phase(phase);
   in_seq_item item = in_seq_item::type_id::create("item");
- 
  forever begin
-    @(posedge pkt_vif.pkt_in_mon_mp.clk_156m25);
- 
+    @(posedge pkt_vif.pkt_in_mon_mp.clk_156m25)
     // Collecting signals
-   
     item.pkt_tx_data = pkt_vif.pkt_in_mon_mp.pkt_in_mon_cb.pkt_tx_data;
     item.pkt_tx_sop  = pkt_vif.pkt_in_mon_mp.pkt_in_mon_cb.pkt_tx_sop;
     item.pkt_tx_eop  = pkt_vif.pkt_in_mon_mp.pkt_in_mon_cb.pkt_tx_eop;

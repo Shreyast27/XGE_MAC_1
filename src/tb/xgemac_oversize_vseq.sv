@@ -16,7 +16,7 @@ class xgemac_oversize_vseq extends xgemac_base_vseq;
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   
-  extern function xgemac_oversize_vseq::new(string name = "xgemac_oversize_vseq");
+  extern function new(string name = "xgemac_oversize_vseq");
   extern task body();
 
 
